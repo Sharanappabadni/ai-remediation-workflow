@@ -1,0 +1,17 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Docker
+*.log
+
+# n8n data
+n8n_data/
+node_modules/
+
+# Generated artifacts
+shared/*
+!shared/.keep

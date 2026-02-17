@@ -1,0 +1,143 @@
+{
+  "name": "workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -400,
+        0
+      ],
+      "id": "737a829b-e124-4c26-a867-0c7374d836d4",
+      "name": "When chat message received",
+      "webhookId": "24f8f589-f44e-4e33-a11b-f1ed2570ceb4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://python-agent:8000/analyze",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"{{$json.type}}\",\n  \"input\": \"{{$json.input}}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "6812725b-dfdd-4f3b-9972-e2cc7cb12a8f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "356b9672-8c68-4334-a803-7947664e026e",
+              "name": "type",
+              "value": "image",
+              "type": "string"
+            },
+            {
+              "id": "fc71ffd8-857b-4bea-93af-a85aa9162255",
+              "name": "input",
+              "value": "={{$json.chatInput}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "aa839864-b6e3-429d-9ca5-1dc2251e3744",
+      "name": "Input_params"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "027b6d27-ebb7-46d3-9c81-6f486daa5acd",
+              "name": "message",
+              "value": "=Original: {{$json.original}} Suggested: {{$json.suggested}} Before: {{$json.before}} After: {{$json.after}} Dockerfile: {{$json.dockerfile}} Report: {{$json.report}} Time: {{$json.time}}s",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        0
+      ],
+      "id": "16e6f8f7-63da-4450-af4f-a2546f7204cd",
+      "name": "Output_response"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Input_params",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Output_response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input_params": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "407335e6-b099-4e4a-9bcf-960c05a987fe",
+  "meta": {
+    "instanceId": "3aefd205b62e949c8c524a5099653a34e3eeebe940251666f2d99a57cb9bf1b9"
+  },
+  "id": "RbLNis5vhwoAJffl",
+  "tags": []
+}

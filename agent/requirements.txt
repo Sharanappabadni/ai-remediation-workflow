@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+openai
+langchain==0.2.16
+langchain-core
+langchain-openai
+langsmith
