@@ -7,10 +7,10 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
 import os
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_TRACING_V2"] = "false"
 
 from langsmith import Client
-client = Client()
+# client = Client()
 
 app = FastAPI()
 

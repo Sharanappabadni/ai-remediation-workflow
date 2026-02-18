@@ -18,9 +18,6 @@ services:
       - ./shared:/shared
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
-      - LANGCHAIN_TRACING_V2=true
-      - LANGCHAIN_PROJECT=test_langsmith
     networks: [demo]
 
 volumes:
