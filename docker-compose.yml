@@ -8,7 +8,8 @@ services:
       - "5678:5678"
     volumes:
       - n8n_data:/home/node/.n8n
-    networks: [demo]
+    networks:
+      - demo
 
   python-agent:
     build: ./agent
@@ -18,7 +19,25 @@ services:
       - ./shared:/shared
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-    networks: [demo]
+    depends_on:
+      - otel-collector
+    networks:
+      - demo
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-config.yaml"]
+    volumes:
+      - ./otel-config.yaml:/etc/otel-config.yaml
+    networks:
+      - demo
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16687:16686"
+    networks:
+      - demo
 
 volumes:
   n8n_data:
